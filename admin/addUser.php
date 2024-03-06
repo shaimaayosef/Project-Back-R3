@@ -1,3 +1,22 @@
+<?php
+include('./connectDB.php');
+if (isset($_POST['add'])){
+	$name = $_POST['full-name'];
+	$userName = $_POST['user-name'];
+	$email = $_POST['email'];
+	$pass = $_POST['password'];
+	$active = $_POST['active']; 
+	
+			$query = "INSERT INTO users(Name,UserName,Email,Password,Active) 
+			VALUES ('$name','$userName','$email','$pass','$active')";
+			
+			$conn->exec($query);
+			
+			echo "<script>alert('user added successfully!')</script>";
+		
+	
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -64,20 +83,20 @@
 							<ul class="nav side-menu">
 								<li><a><i class="fa fa-users"></i> Users <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="users.html">Users List</a></li>
-										<li><a href="addUser.html">Add User</a></li>
+										<li><a href="users.php">Users List</a></li>
+										<li><a href="addUser.php">Add User</a></li>
 									</ul>
 								</li>
 								<li><a><i class="fa fa-edit"></i> Categories <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="addCategory.html">Add Category</a></li>
-										<li><a href="categories.html">Categories List</a></li>
+										<li><a href="addCategory.php">Add Category</a></li>
+										<li><a href="categories.php">Categories List</a></li>
 									</ul>
 								</li>
 								<li><a><i class="fa fa-desktop"></i> News <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="addNews.html">Add News</a></li>
-										<li><a href="News.html">News List</a></li>
+										<li><a href="addNews.php">Add News</a></li>
+										<li><a href="News.php">News List</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -242,13 +261,12 @@
 								</div>
 								<div class="x_content">
 									<br />
-									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
+									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Full Name <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="full-name">Full Name <span class="required">*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="text" id="first-name" required="required" class="form-control ">
+												<input type="text" id="full-name" required="required" class="form-control" name="full-name" >
 											</div>
 										</div>
 										<div class="item form-group">
@@ -268,7 +286,8 @@
 											<label class="col-form-label col-md-3 col-sm-3 label-align">Active</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox" class="flat">
+													<input type="hidden" name="active" value="No"> <!-- Set default value to "No" -->
+													<input type="checkbox" class="flat" name="active" value="Yes"> <!-- Set value to "Yes" when checked -->
 												</label>
 											</div>
 										</div>
@@ -282,8 +301,7 @@
 										<div class="ln_solid"></div>
 										<div class="item form-group">
 											<div class="col-md-6 col-sm-6 offset-md-3">
-												<button class="btn btn-primary" type="button">Cancel</button>
-												<button type="submit" class="btn btn-success">Add</button>
+												<button type="submit" class="btn btn-success" name="add">Add</button>
 											</div>
 										</div>
 

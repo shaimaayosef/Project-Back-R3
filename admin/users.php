@@ -1,3 +1,10 @@
+<?php
+include('./connectDB.php');
+$query = "SELECT * FROM users";
+$stmt = $conn->prepare($query);  // Prepare the SQL statement
+$stmt->execute();  // Execute the SQL statement
+$users = $stmt->fetchAll();  // Fetch all the results
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -62,20 +69,20 @@
 							<ul class="nav side-menu">
 								<li><a><i class="fa fa-users"></i> Users <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="users.html">Users List</a></li>
-										<li><a href="addUser.html">Add User</a></li>
+										<li><a href="users.php">Users List</a></li>
+										<li><a href="addUser.php">Add User</a></li>
 									</ul>
 								</li>
 								<li><a><i class="fa fa-edit"></i> Categories <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="addCategory.html">Add Category</a></li>
-										<li><a href="categories.html">Categories List</a></li>
+										<li><a href="addCategory.php">Add Category</a></li>
+										<li><a href="categories.php">Categories List</a></li>
 									</ul>
 								</li>
 								<li><a><i class="fa fa-desktop"></i> News <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="addNews.html">Add News</a></li>
-										<li><a href="News.html">News List</a></li>
+										<li><a href="addNews.php">Add News</a></li>
+										<li><a href="News.php">News List</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -253,10 +260,18 @@
                           <th>Edit</th>
                         </tr>
                       </thead>
-
-
                       <tbody>
-                        <tr>
+                        <?php foreach ($users as $user) {
+                            echo "<tr>";
+                            echo "<td>" . $user['RegistrationDate'] . "</td>";
+                            echo "<td>" . $user['Name'] . "</td>";
+                            echo "<td>" . $user['UserName'] . "</td>";
+                            echo "<td>" . $user['Email'] . "</td>";
+                            echo "<td>" . $user['Active'] . "</td>";
+                            echo "<td> <a href='./edituser.php?id={$user['Id']}' ><img src='./images/edit.png' alt='Edit'></a> </td>";
+                            echo "</tr>";
+                          } ?> 
+                        <!-- <tr>
                           <td>1 Jan 2023</td>
                           <td>Tony Adam</td>
                           <td>tony2023</td>
@@ -335,7 +350,7 @@
                           <td>tony@gmail.com</td>
                           <td>Yes</td>
                           <td><img src="./images/edit.png" alt="Edit"></td>
-                        </tr>
+                        </tr> -->
                         
                       </tbody>
                     </table>

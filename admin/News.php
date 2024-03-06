@@ -1,3 +1,10 @@
+<?php
+include('./connectDB.php');
+$query = "SELECT * FROM news";
+$stmt = $conn->prepare($query);  // Prepare the SQL statement
+$stmt->execute();  // Execute the SQL statement
+$news = $stmt->fetchAll();  // Fetch all the results
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -62,20 +69,20 @@
 							<ul class="nav side-menu">
 								<li><a><i class="fa fa-users"></i> Users <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="users.html">Users List</a></li>
-										<li><a href="addUser.html">Add User</a></li>
+										<li><a href="users.php">Users List</a></li>
+										<li><a href="addUser.php">Add User</a></li>
 									</ul>
 								</li>
 								<li><a><i class="fa fa-edit"></i> Categories <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="addCategory.html">Add Category</a></li>
-										<li><a href="categories.html">Categories List</a></li>
+										<li><a href="addCategory.php">Add Category</a></li>
+										<li><a href="categories.php">Categories List</a></li>
 									</ul>
 								</li>
 								<li><a><i class="fa fa-desktop"></i> News <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="addNews.html">Add News</a></li>
-										<li><a href="News.html">News List</a></li>
+										<li><a href="addNews.php">Add News</a></li>
+										<li><a href="News.php">News List</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -252,9 +259,37 @@
                           <th>Delete</th>
                         </tr>
                       </thead>
-
-
                       <tbody>
+                      <?php foreach ($news as $new) {
+                        echo "<tr>";
+                        echo "<td>".$new['NewsDate']."</td>";
+                        echo "<td>".$new['Title']."</td>";
+                        echo "<td>".$new['Active']."</td>";
+                        echo "<td> <a href='./editNews.php?id={$new['Id']}' ><img src='./images/edit.png' alt='Edit'></a> </td>";
+                        echo "<td> <a href='./editNews.php?id={$new['Id']}' ><img src='./images/delete.png' alt='Edit'></a> </td>";
+                        echo "</tr>";
+                      } ?>
+                        <!-- <tr>
+                          <td>1 Jan 2023</td>
+                          <td>Title</td>
+                          <td>Yes</td>
+                          <td><img src="./images/edit.png" alt="Edit"></td>
+                          <td><img src="./images/delete.png" alt="Delete"></td>
+                        </tr>
+                        <tr>
+                          <td>1 Jan 2023</td>
+                          <td>Title</td>
+                          <td>Yes</td>
+                          <td><img src="./images/edit.png" alt="Edit"></td>
+                          <td><img src="./images/delete.png" alt="Delete"></td>
+                        </tr>
+                        <tr>
+                          <td>1 Jan 2023</td>
+                          <td>Title</td>
+                          <td>Yes</td>
+                          <td><img src="./images/edit.png" alt="Edit"></td>
+                          <td><img src="./images/delete.png" alt="Delete"></td>
+                        </tr>
                         <tr>
                           <td>1 Jan 2023</td>
                           <td>Title</td>
@@ -276,7 +311,27 @@
                           <td><img src="./images/edit.png" alt="Edit"></td>
                           <td><img src="./images/delete.png" alt="Delete"></td>
                         </tr>
-                        
+                        <tr>
+                          <td>1 Jan 2023</td>
+                          <td>Title</td>
+                          <td>Yes</td>
+                          <td><img src="./images/edit.png" alt="Edit"></td>
+                          <td><img src="./images/delete.png" alt="Delete"></td>
+                        </tr>
+                        <tr>
+                          <td>1 Jan 2023</td>
+                          <td>Title</td>
+                          <td>Yes</td>
+                          <td><img src="./images/edit.png" alt="Edit"></td>
+                          <td><img src="./images/delete.png" alt="Delete"></td>
+                        </tr>
+                        <tr>
+                          <td>1 Jan 2023</td>
+                          <td>Title</td>
+                          <td>Yes</td>
+                          <td><img src="./images/edit.png" alt="Edit"></td>
+                          <td><img src="./images/delete.png" alt="Delete"></td>
+                        </tr> --> 
                       </tbody>
                     </table>
                   </div>
