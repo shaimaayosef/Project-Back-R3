@@ -1,17 +1,36 @@
 <?php
 include('./connectDB.php');
-if (isset($_POST['add'])){
-        $name = $_POST['full-mame'];
-        $userName = $_POST['user-name'];
-        $email = $_POST['email'];
-        $pass = $_POST['password'];
-        $active = $_POST['active']; 
-        if(!empty($name) && !empty($email) && !empty($pass)){
-                $query = "INSERT INTO users(Name,UserName,Email,Password,Active) 
-                VALUES ('$name','$email','$pass','$gender')";
-                $conn->exec($query);
-                echo "<script>alert('user added successfully!')</script>";
-        }
+$id = $_GET['id'];
+if (isset($_POST['update'])){
+	$name = $_POST['full-name'];
+	$userName = $_POST['user-name'];
+	$email = $_POST['email'];
+	$pass = $_POST['password'];
+    $updateFields = array();
+    if (!empty($name)) {
+        $updateFields[] = "Name='$name'";
+    }
+    if (!empty($userName)) {
+        $updateFields[] = "UserName='$userName'";
+    }
+    if (!empty($email)) {
+        $updateFields[] = "Email='$email'";
+    }
+	if (!empty($pass)) {
+        $updateFields[] = "Password='$pass'";
+    }
+    if (isset($_POST['active']) && !empty($_POST['active'])) {
+        $active = $_POST['active'];
+        $updateFields[] = "Active='$active'";
+    }
+
+    if (!empty($updateFields)) {
+        $updateQuery = "UPDATE users SET " . implode(", ", $updateFields) . " WHERE Id=$id";
+        $conn->exec($updateQuery);
+        echo "<script>alert('user updated successfully!')</script>";
+    } else {
+        echo "<script>alert('nothing to update!')</script>";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -258,48 +277,47 @@ if (isset($_POST['add'])){
 								</div>
 								<div class="x_content">
 									<br />
-									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
+									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Full Name <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="full-name">Full Name <span class="required">*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="text" id="first-name" required="required" class="form-control ">
+												<input type="text" id="full-name"  class="form-control" name="full-name" >
 											</div>
 										</div>
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="user-name">Username <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="user-name">Username <span >*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="text" id="user-name" name="user-name" required="required" class="form-control">
+												<input type="text" id="user-name" name="user-name" class="form-control">
 											</div>
 										</div>
 										<div class="item form-group">
-											<label for="email" class="col-form-label col-md-3 col-sm-3 label-align">Email <span class="required">*</span></label>
+											<label for="email" class="col-form-label col-md-3 col-sm-3 label-align">Email <span >*</span></label>
 											<div class="col-md-6 col-sm-6 ">
-												<input id="email" class="form-control" type="email" name="email" required="required">
+												<input id="email" class="form-control" type="email" name="email" >
 											</div>
 										</div>
 										<div class="item form-group">
 											<label class="col-form-label col-md-3 col-sm-3 label-align">Active</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox" class="flat">
+													<input type="hidden" name="active" value="No"> <!-- Set default value to "No" -->
+													<input type="checkbox" class="flat" name="active" value="Yes"> <!-- Set value to "Yes" when checked -->
 												</label>
 											</div>
 										</div>
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="password">Password <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="password">Password <span >*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="password" id="password" name="password" required="required" class="form-control">
+												<input type="password" id="password" name="password" class="form-control">
 											</div>
 										</div>
 										<div class="ln_solid"></div>
 										<div class="item form-group">
 											<div class="col-md-6 col-sm-6 offset-md-3">
-												<button class="btn btn-primary" type="button" onclick="window.location.href = 'users.php'">Cancel</button>
-												<button type="submit" class="btn btn-success">Update</button>
+												<button type="submit" class="btn btn-success" name="add">Add</button>
 											</div>
 										</div>
 

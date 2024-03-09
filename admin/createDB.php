@@ -47,7 +47,7 @@ if ($usersTable) {
         echo "Error creating table: " . $conn->error;
     }
 }
-
+ 
 // Create news table
 if ($newsTable) {
     $newsTblQuery = "CREATE TABLE news (

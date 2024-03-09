@@ -1,3 +1,17 @@
+<?php
+include('./connectDB.php');
+$id = $_GET['id'];
+if (isset($_POST['update'])){
+	$categoryName = $_POST['add-category'];
+	if (!empty($categoryName)) {
+		$updateQuery = "UPDATE categories SET CategoryName='$categoryName' WHERE Id=$id";
+		$conn->exec($updateQuery);
+		header("Location: categories.php");
+	} else {
+		echo "<script>alert('nothing to update!')</script>";
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -242,21 +256,21 @@
 								</div>
 								<div class="x_content">
 									<br />
-									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="<?php $_PHP_SELFE?>" method="POST">
 
 										<div class="item form-group">
 											<label class="col-form-label col-md-3 col-sm-3 label-align" for="add-category">Edit Category <span class="required">*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="text" id="add-category" required="required" class="form-control ">
+												<input type="text" id="add-category" required="required" class="form-control" name="add-category">
 											</div>
 										</div>
 										
 										<div class="ln_solid"></div>
 										<div class="item form-group">
 											<div class="col-md-6 col-sm-6 offset-md-3">
+												<button type="submit" class="btn btn-success" name="update">Update</button>
 												<button class="btn btn-primary" type="button" onclick="window.location.href = 'categories.php'" >Cancel</button>
-												<button type="submit" class="btn btn-success">Update</button>
 											</div>
 										</div>
 

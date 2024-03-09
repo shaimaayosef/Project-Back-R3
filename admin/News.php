@@ -4,6 +4,14 @@ $query = "SELECT * FROM news";
 $stmt = $conn->prepare($query);  // Prepare the SQL statement
 $stmt->execute();  // Execute the SQL statement
 $news = $stmt->fetchAll();  // Fetch all the results
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+if ($id) {
+  $deleteQuery = "DELETE FROM news WHERE Id=$id";
+  $conn->exec($deleteQuery);
+  echo "<script>alert('deleted successfully!')</script>";
+  header("Location: news.php");
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -254,6 +262,7 @@ $news = $stmt->fetchAll();  // Fetch all the results
                         <tr>
                           <th>News Date</th>
                           <th>Title</th>
+                          <th>Author</th>
                           <th>Active</th>
                           <th>Edit</th>
                           <th>Delete</th>
@@ -264,9 +273,10 @@ $news = $stmt->fetchAll();  // Fetch all the results
                         echo "<tr>";
                         echo "<td>".$new['NewsDate']."</td>";
                         echo "<td>".$new['Title']."</td>";
+                        echo "<td>".$new['Author']."</td>";
                         echo "<td>".$new['Active']."</td>";
                         echo "<td> <a href='./editNews.php?id={$new['Id']}' ><img src='./images/edit.png' alt='Edit'></a> </td>";
-                        echo "<td> <a href='./editNews.php?id={$new['Id']}' ><img src='./images/delete.png' alt='Edit'></a> </td>";
+                        echo "<td> <a href='./News.php?id={$new['Id']}' ><img src='./images/delete.png' alt='Edit'></a> </td>";
                         echo "</tr>";
                       } ?>
                         <!-- <tr>

@@ -4,6 +4,14 @@ $query = "SELECT * FROM categories";
 $stmt = $conn->prepare($query);  // Prepare the SQL statement
 $stmt->execute();  // Execute the SQL statement
 $categories = $stmt->fetchAll();  // Fetch all the results
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+if ($id) {
+  $deleteQuery = "DELETE FROM categories WHERE Id=$id";
+  $conn->exec($deleteQuery);
+  echo "<script>alert('deleted successfully!')</script>";
+  header("Location: categories.php");
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -260,11 +268,12 @@ $categories = $stmt->fetchAll();  // Fetch all the results
                       <tbody>
                         <?php foreach($categories as $category){
                             echo "<tr>";
-                            echo "<td>".$category['CategoryName']."</td>";
+                            echo "<td>". $category['CategoryName']."</td>";
                             echo "<td> <a href='./editCategory.php?id={$category['Id']}' ><img src='./images/edit.png' alt='Edit'></a> </td>";
-                            echo "<td><img src='./images/delete.png' alt='Delete'></td>";
+                            echo "<td> <a href='./categories.php?id={$category['Id']}' ><img src='./images/delete.png' alt='Edit'></a> </td>";
                             echo "</tr>";
                         }
+                        
                           ?>
                         <!-- <tr>
                           <td>Category</td>

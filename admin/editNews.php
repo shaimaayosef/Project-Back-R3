@@ -1,3 +1,40 @@
+<?php
+include('./connectDB.php');
+$id = $_GET['id'];
+if (isset($_POST['update'])){
+    $newsDate = $_POST['News-date'];
+	$title = $_POST['title'];
+	$contant = $_POST['content'];
+	$author = $_POST['author'];
+	$img = $_POST['image'];
+	$category = $_POST['category'];
+    $updateFields = array();
+    if (!empty($author)) {
+        $updateFields[] = "Author='$author'";
+    }
+    if (!empty($title)) {
+        $updateFields[] = "Title='$title'";
+    }
+    if (!empty($contant)) {
+        $updateFields[] = "Content='$contant'";
+    }
+	if (!empty($category)) {
+        $updateFields[] = "CategoryName='$category'";
+    }
+    if (isset($_POST['active']) && !empty($_POST['active'])) {
+        $active = $_POST['active'];
+        $updateFields[] = "Active='$active'";
+    }
+
+    if (!empty($updateFields)) {
+        $updateQuery = "UPDATE news SET " . implode(", ", $updateFields) . " WHERE Id=$id";
+        $conn->exec($updateQuery);
+        header("Location: News.php");
+    } else {
+        echo "<script>alert('nothing to update!')</script>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -242,52 +279,53 @@
 								</div>
 								<div class="x_content">
 									<br />
-									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="<?php $_PHP_SELFE?>" method="POST">
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="News-date">News Date <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="News-date">News Date
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="date" id="News-date" required="required" class="form-control ">
+												<input type="date" id="News-date" class="form-control" name="News-date">
 											</div>
 										</div>
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Title <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Title
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="text" id="title" required="required" class="form-control ">
+												<input type="text" id="title" class="form-control" name="title">
 											</div>
 										</div>
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="content">Content <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="content">Content
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<textarea id="content" name="content" required="required" class="form-control">Contents</textarea>
+												<textarea id="content" name="content" class="form-control">Contents</textarea>
 											</div>
 										</div>
 										<div class="item form-group">
-											<label for="author" class="col-form-label col-md-3 col-sm-3 label-align">Author <span class="required">*</span></label>
+											<label for="author" class="col-form-label col-md-3 col-sm-3 label-align">Author</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input id="author" class="form-control" type="text" name="author" required="required">
+												<input id="author" class="form-control" type="text" name="author">
 											</div>
 										</div>
 										<div class="item form-group">
 											<label class="col-form-label col-md-3 col-sm-3 label-align">Active</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox" class="flat">
+													<input type="hidden" name="active" value="No">
+													<input type="checkbox" class="flat" name="active" value="Yes">
 												</label>
 											</div>
 										</div>
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Image <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Image
 											</label>
 											<div class="col-md-6 col-sm-6 ">
-												<input type="file" id="image" name="image" required="required" class="form-control">
+												<input type="file" id="image" name="image" class="form-control">
 											</div>
 										</div>
 
 										<div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Category <span class="required">*</span>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Category
 											</label>
 											<div class="col-md-6 col-sm-6 ">
 												<select class="form-control" name="category" id="">
@@ -300,11 +338,10 @@
 										<div class="ln_solid"></div>
 										<div class="item form-group">
 											<div class="col-md-6 col-sm-6 offset-md-3">
-												<button class="btn btn-primary" type="button" onclick="window.location.href = 'News.php'">Cancel</button>
-												<button type="submit" class="btn btn-success">Add</button>
+												<button type="submit" class="btn btn-success" name="update">Update</button>
+												<button class="btn btn-primary" type="button" name="cancel" onclick="window.location.href = 'News.php'">Cancel</button>
 											</div>
 										</div>
-
 									</form>
 								</div>
 							</div>
