@@ -49,7 +49,7 @@ if (isset($_POST['add'])){
 			<div class="col-md-3 left_col">
 				<div class="left_col scroll-view">
 					<div class="navbar nav_title" style="border: 0;">
-						<a href="index.html" class="site_title"><i class="fa fa-newspaper-o"></i> <span>News Admin</span></a>
+						<a href="index.php" class="site_title"><i class="fa fa-newspaper-o"></i> <span>News Admin</span></a>
 					</div>
 
 					<div class="clearfix"></div>
@@ -61,7 +61,20 @@ if (isset($_POST['add'])){
 						</div>
 						<div class="profile_info">
 							<span>Welcome,</span>
-							<h2>John Doe</h2>
+							<h2>
+							<?php
+                    if (session_status() === PHP_SESSION_NONE) {
+                      session_start();
+                    }
+                    if(isset($_SESSION['u-name'])){
+                      echo $_SESSION['u-name']; 
+                    }
+                    
+                    if(isset($_SESSION['uname'])){
+                      echo $_SESSION['uname'];
+                    }
+                    ?>
+							</h2>
 						</div>
 					</div>
 					<!-- /menu profile quick info -->
@@ -108,7 +121,7 @@ if (isset($_POST['add'])){
 						<a data-toggle="tooltip" data-placement="top" title="Lock">
 							<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
 						</a>
-						<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+						<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.php?logout=true">
 							<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
 						</a>
 					</div>
@@ -135,7 +148,7 @@ if (isset($_POST['add'])){
 										<span>Settings</span>
 									</a>
 									<a class="dropdown-item" href="javascript:;">Help</a>
-									<a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+									<a class="dropdown-item" href="login.php?logout=true"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
 								</div>
 							</li>
 
@@ -265,8 +278,8 @@ if (isset($_POST['add'])){
 										<div class="ln_solid"></div>
 										<div class="item form-group">
 											<div class="col-md-6 col-sm-6 offset-md-3">
-												<button class="btn btn-primary" type="button"onclick="window.location.href = 'categories.php'" >Cancel</button>
 												<button type="submit" class="btn btn-success" name="add" >Add</button>
+												<button class="btn btn-primary" type="button"onclick="window.location.href = 'categories.php'" >Cancel</button>
 											</div>
 										</div>
 

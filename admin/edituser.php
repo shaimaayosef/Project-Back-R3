@@ -27,6 +27,7 @@ if (isset($_POST['update'])){
     if (!empty($updateFields)) {
         $updateQuery = "UPDATE users SET " . implode(", ", $updateFields) . " WHERE Id=$id";
         $conn->exec($updateQuery);
+		header("Location: users.php");
         echo "<script>alert('user updated successfully!')</script>";
     } else {
         echo "<script>alert('nothing to update!')</script>";
@@ -73,7 +74,7 @@ if (isset($_POST['update'])){
 			<div class="col-md-3 left_col">
 				<div class="left_col scroll-view">
 					<div class="navbar nav_title" style="border: 0;">
-						<a href="index.html" class="site_title"><i class="fa fa-newspaper-o"></i> <span>News Admin</span></a>
+						<a href="index.php" class="site_title"><i class="fa fa-newspaper-o"></i> <span>News Admin</span></a>
 					</div>
 
 					<div class="clearfix"></div>
@@ -85,7 +86,20 @@ if (isset($_POST['update'])){
 						</div>
 						<div class="profile_info">
 							<span>Welcome,</span>
-							<h2>John Doe</h2>
+							<h2>
+							<?php
+                    if (session_status() === PHP_SESSION_NONE) {
+                      session_start();
+                    }
+                    if(isset($_SESSION['u-name'])){
+                      echo $_SESSION['u-name']; 
+                    }
+                    
+                    if(isset($_SESSION['uname'])){
+                      echo $_SESSION['uname'];
+                    }
+                    ?>
+							</h2>
 						</div>
 					</div>
 					<!-- /menu profile quick info -->
@@ -132,7 +146,7 @@ if (isset($_POST['update'])){
 						<a data-toggle="tooltip" data-placement="top" title="Lock">
 							<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
 						</a>
-						<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+						<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.php?logout=true">
 							<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
 						</a>
 					</div>
@@ -159,7 +173,7 @@ if (isset($_POST['update'])){
 										<span>Settings</span>
 									</a>
 									<a class="dropdown-item" href="scriptript:;">Help</a>
-									<a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+									<a class="dropdown-item" href="login.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
 								</div>
 							</li>
 
@@ -277,7 +291,7 @@ if (isset($_POST['update'])){
 								</div>
 								<div class="x_content">
 									<br />
-									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="<?php $_PHP_SELFE?>" method="POST">
 										<div class="item form-group">
 											<label class="col-form-label col-md-3 col-sm-3 label-align" for="full-name">Full Name <span class="required">*</span>
 											</label>
@@ -317,7 +331,7 @@ if (isset($_POST['update'])){
 										<div class="ln_solid"></div>
 										<div class="item form-group">
 											<div class="col-md-6 col-sm-6 offset-md-3">
-												<button type="submit" class="btn btn-success" name="add">Add</button>
+												<button type="submit" class="btn btn-success" name="update">Update</button>
 											</div>
 										</div>
 

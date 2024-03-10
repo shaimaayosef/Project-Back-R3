@@ -1,3 +1,42 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start(); // Start the session if it is not already active
+}
+if(isset($_POST['login'])){
+  $name = $_POST['u-name'];
+  $pw = $_POST['pwd'];
+  if(!empty($name) && !empty($pw)){
+    $_SESSION['u-name'] = $name;
+    $_SESSION['pwd'] = $pw;
+    header('Location: users.php');
+    exit();
+  }     
+}
+if(isset($_POST['Submit'])){
+  $email = $_POST['uemail'];
+  $pw = $_POST['upassword'];
+  $fullName = $_POST['fullname'];
+  $uName = $_POST['uname'];
+  if(!empty($email) && !empty($pw)){
+    $_SESSION['uemail'] = $email;
+    $_SESSION['upassword'] = $pw;
+    $_SESSION['fullname'] = $fullName;
+    $_SESSION['uname'] = $uName;
+    header('Location: users.php');
+    exit();
+  }     
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
+    unset($_SESSION['u-email']);
+    unset($_SESSION['pwd']);
+    unset($_SESSION['u-name']);
+
+    session_destroy(); // Destroy the session
+  }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -30,16 +69,16 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form>
+            <form  action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
               <h1>Login Form</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
+                <input type="text" class="form-control" placeholder="Username" required="" name="u-name" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" class="form-control" placeholder="Password" required="" name="pwd" />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Log in</a>
+                <button class="btn btn-default submit" name="login">Log in</button>
                 <a class="reset_pass" href="#">Lost your password?</a>
               </div>
 
@@ -64,22 +103,22 @@
 
         <div id="register" class="animate form registration_form">
           <section class="login_content">
-            <form>
+            <form  action="<?php echo $_SERVER['PHP_SELF']?>" method="POST" >
               <h1>Create Account</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Fullname" required="" />
+                <input type="text" class="form-control" placeholder="Fullname" required=""name="fullname"/>
               </div>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
+                <input type="text" class="form-control" placeholder="Username" required=""name="uname"/>
               </div>
               <div>
-                <input type="email" class="form-control" placeholder="Email" required="" />
+                <input type="email" class="form-control" placeholder="Email" required=""name="uemail"/>
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" class="form-control" placeholder="Password" required=""name="upassword"/>
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Submit</a>
+                <button class="btn btn-default submit"name="Submit">Submit</button>
               </div>
 
               <div class="clearfix"></div>
@@ -90,8 +129,7 @@
                 </p>
 
                 <div class="clearfix"></div>
-                <br />
-
+                <br/>
                 <div>
                   <h1><i class="fa fa-newspaper-o"></i></i> News Admin</h1>
                   <p>©2016 All Rights Reserved. News Admin is a Bootstrap 4 template. Privacy and Terms</p>
