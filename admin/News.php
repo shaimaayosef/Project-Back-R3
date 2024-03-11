@@ -288,8 +288,8 @@ if ($id) {
                         echo "<td>".$new['Title']."</td>";
                         echo "<td>".$new['Author']."</td>";
                         echo "<td>".$new['Active']."</td>";
-                        echo "<td> <a href='./editNews.php?id={$new['Id']}' ><img src='./images/edit.png' alt='Edit'></a> </td>";
-                        echo "<td> <a href='./News.php?id={$new['Id']}' ><img src='./images/delete.png' alt='Edit'></a> </td>";
+                        echo "<td> <a href='./editNews.php?id={$new['Id']}'><img src='./images/edit.png' alt='Edit'></a></td>";
+                        echo "<td> <a href='./News.php?id={$new['Id']}'><img src='./images/delete.png' alt='Edit'></a> </td>";
                         echo "</tr>";
                       } ?>
                         <!-- <tr>

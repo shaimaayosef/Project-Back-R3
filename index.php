@@ -1,3 +1,10 @@
+<?php
+include('./admin/connectDB.php');
+$query = "SELECT * FROM news";
+$stmt = $conn->prepare($query);  // Prepare the SQL statement
+$stmt->execute();  // Execute the SQL statement
+$news = $stmt->fetchAll();  // Fetch all the results
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,7 +105,18 @@
             <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
                 <div class="navbar-nav mr-auto py-0">
                     <a href="index.php" class="nav-item nav-link active">Home</a>
-                    <a href="category.php" class="nav-item nav-link">Category</a>
+                    <div  class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                        <?php foreach ($news as $new) {
+                            echo '<a href="category.php" class="dropdown-item">'.$new['CategoryName'].'</a>';
+                        }
+                         ?>
+                            <!-- <a href="#" class="dropdown-item">Menu item 1</a>
+                            <a href="#" class="dropdown-item">Menu item 2</a>
+                            <a href="#" class="dropdown-item">Menu item 3</a> -->
+                        </div>
+                    </div>
                     <a href="single.php" class="nav-item nav-link">Single News</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
@@ -128,7 +146,21 @@
         <div class="row">
             <div class="col-lg-7 px-0">
                 <div class="owl-carousel main-carousel position-relative">
-                    <div class="position-relative overflow-hidden" style="height: 500px;">
+                    <?php foreach ($news as $new) {
+                        echo '<div class="position-relative overflow-hidden" style="height: 500px;">
+                        <img class="img-fluid h-100" src="img/news-800x500-1.jpg" style="object-fit: cover;">
+                        <div class="overlay">
+                            <div class="mb-2">
+                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                    href="">'.$new['CategoryName'].'</a>
+                                <a class="text-white" href=""> '.$new['NewsDate'] .'</a>
+                            </div>
+                            <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="./single.php">'.$new['Title'].'</a>
+                        </div>
+                    </div>';
+                    } 
+                    ?>
+                    <!-- <div class="position-relative overflow-hidden" style="height: 500px;">
                         <img class="img-fluid h-100" src="img/news-800x500-1.jpg" style="object-fit: cover;">
                         <div class="overlay">
                             <div class="mb-2">
@@ -160,12 +192,28 @@
                             </div>
                             <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="">Lorem ipsum dolor sit amet elit. Proin vitae porta diam...</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-lg-5 px-0">
                 <div class="row mx-0">
-                    <div class="col-md-6 px-0">
+                    <?php foreach ($news as $new) {
+                        echo '
+                        <div class="col-md-6 px-0">
+                            <div class="position-relative overflow-hidden" style="height: 250px;">
+                                <img class="img-fluid w-100 h-100" src="img/news-700x435-1.jpg" style="object-fit: cover;">
+                                <div class="overlay">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                            href="">'.$new['CategoryName'].'</a>
+                                        <a class="text-white" href="">'.$new['NewsDate'].'</a>
+                                    </div>
+                                    <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="./single.php?id={$new["Id"]}">'.$new['Title'].'</a>
+                                </div>
+                            </div>
+                        </div>';
+                    }?>
+                    <!-- <div class="col-md-6 px-0">
                         <div class="position-relative overflow-hidden" style="height: 250px;">
                             <img class="img-fluid w-100 h-100" src="img/news-700x435-1.jpg" style="object-fit: cover;">
                             <div class="overlay">
@@ -216,7 +264,7 @@
                                 <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -233,8 +281,13 @@
                         <div class="bg-primary text-dark text-center font-weight-medium py-2" style="width: 170px;">Breaking News</div>
                         <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center ml-3"
                             style="width: calc(100% - 170px); padding-right: 90px;">
-                            <div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales</a></div>
-                            <div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales</a></div>
+                            <?php 
+                            foreach ($news as $new) {
+                                echo '<div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">'.$new['Title'].'</a></div>';
+                            }
+                            ?>
+                            <!-- <div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales</a></div>
+                            <div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales</a></div> -->
                         </div>
                     </div>
                 </div>
@@ -251,18 +304,21 @@
                 <h4 class="m-0 text-uppercase font-weight-bold">Featured News</h4>
             </div>
             <div class="owl-carousel news-carousel carousel-item-4 position-relative">
-                <div class="position-relative overflow-hidden" style="height: 300px;">
+                <?php foreach ($news as $new) {
+                    echo '<div class="position-relative overflow-hidden" style="height: 300px;">
                     <img class="img-fluid h-100" src="img/news-700x435-1.jpg" style="object-fit: cover;">
                     <div class="overlay">
                         <div class="mb-2">
                             <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                href="">Business</a>
-                            <a class="text-white" href=""><small>Jan 01, 2045</small></a>
+                                href="">'. $new['CategoryName'] .'</a>
+                            <a class="text-white" href=""><small>'.$new['NewsDate'].'</small></a>
                         </div>
-                        <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
+                        <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">'.$new['Title'].'</a>
                     </div>
-                </div>
-                <div class="position-relative overflow-hidden" style="height: 300px;">
+                </div>';
+                }
+                ?>
+                <!-- <div class="position-relative overflow-hidden" style="height: 300px;">
                     <img class="img-fluid h-100" src="img/news-700x435-2.jpg" style="object-fit: cover;">
                     <div class="overlay">
                         <div class="mb-2">
@@ -305,7 +361,7 @@
                         </div>
                         <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -677,7 +733,12 @@
                         </div>
                         <div class="bg-white border border-top-0 p-3">
                             <div class="d-flex flex-wrap m-n1">
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Politics</a>
+                                <?php 
+                                 foreach($news as $new){
+                                    echo '<a href="" class="btn btn-sm btn-outline-secondary m-1">'.$new['CategoryName'].'</a>';
+                                 }
+                                ?>
+                                <!-- <a href="" class="btn btn-sm btn-outline-secondary m-1">Politics</a>
                                 <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
                                 <a href="" class="btn btn-sm btn-outline-secondary m-1">Corporate</a>
                                 <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
@@ -686,7 +747,7 @@
                                 <a href="" class="btn btn-sm btn-outline-secondary m-1">Science</a>
                                 <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
                                 <a href="" class="btn btn-sm btn-outline-secondary m-1">Foods</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Travel</a>
+                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Travel</a> -->
                             </div>
                         </div>
                     </div>
@@ -717,7 +778,23 @@
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h5 class="mb-4 text-white text-uppercase font-weight-bold">Popular News</h5>
-                <div class="mb-3">
+                <?php 
+                                $counter = 0;
+                                foreach($news as $new){
+                                    if ($counter >= 3) {
+                                        break;
+                                    }
+                                    echo '<div class="mb-3">
+                                        <div class="mb-2">
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">'.$new['CategoryName'].'</a>
+                                            <a class="text-body" href=""><small>'.$new['NewsDate'].'</small></a>
+                                        </div>
+                                        <a class="small text-body text-uppercase font-weight-medium" href="">'.$new['Title'].'</a>
+                                    </div>';
+                                    $counter++;
+                                }
+                            ?>
+                <!-- <div class="mb-3">
                     <div class="mb-2">
                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
                         <a class="text-body" href=""><small>Jan 01, 2045</small></a>
@@ -731,18 +808,23 @@
                     </div>
                     <a class="small text-body text-uppercase font-weight-medium" href="">Lorem ipsum dolor sit amet elit. Proin vitae porta diam...</a>
                 </div>
-                <div class="">
+                <div class="mb-3">
                     <div class="mb-2">
                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
                         <a class="text-body" href=""><small>Jan 01, 2045</small></a>
                     </div>
                     <a class="small text-body text-uppercase font-weight-medium" href="">Lorem ipsum dolor sit amet elit. Proin vitae porta diam...</a>
-                </div>
+                </div> -->
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h5 class="mb-4 text-white text-uppercase font-weight-bold">Categories</h5>
                 <div class="m-n1">
-                    <a href="" class="btn btn-sm btn-secondary m-1">Politics</a>
+                <?php 
+                                 foreach($news as $new){
+                                    echo '<a href="" class="btn btn-sm btn-secondary m-1">'.$new['CategoryName'].'</a>';
+                                 }
+                                ?>
+                    <!-- <a href="" class="btn btn-sm btn-secondary m-1">Politics</a>
                     <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
                     <a href="" class="btn btn-sm btn-secondary m-1">Corporate</a>
                     <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
@@ -762,7 +844,7 @@
                     <a href="" class="btn btn-sm btn-secondary m-1">Education</a>
                     <a href="" class="btn btn-sm btn-secondary m-1">Science</a>
                     <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Foods</a>
+                    <a href="" class="btn btn-sm btn-secondary m-1">Foods</a> -->
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">

@@ -1,5 +1,9 @@
 <?php
 include('./connectDB.php');
+$query = "SELECT * FROM categories";
+$stmt = $conn->prepare($query);  // Prepare the SQL statement
+$stmt->execute();  // Execute the SQL statement
+$categories = $stmt->fetchAll();  // Fetch all the results
 if (isset($_POST['add'])){
 	$newsDate = $_POST['News-date'];
 	$title = $_POST['title'];
@@ -321,9 +325,12 @@ if (isset($_POST['add'])){
 											</label>
 											<div class="col-md-6 col-sm-6 ">
 												<select class="form-control" name="category" id="">
-													<option value=" ">Select Category</option>
+												<?php foreach($categories as $category){
+													echo "<option value='".$category['CategoryName']."'>".$category['CategoryName']."</option>";
+												}?>
+													<!-- <option value=" ">Select Category</option>
 													<option value="cat1">Category 1</option>
-													<option value="cat2">Category 2</option>
+													<option value="cat2">Category 2</option> -->
 												</select>
 											</div>
 										</div>
